@@ -109,7 +109,8 @@ function createPost($request_values)
 		}
 		// create post if there are no errors in the form 如果表單中沒有錯誤，請創建帖子
 		if (count($errors) == 0) {
-			$query = "INSERT INTO posts (user_id, title, slug, image, body, published, created_at, updated_at) VALUES(1, '$title', '$post_slug', '$featured_image', '$body', $published, now(), now())";
+			$user_id = $_SESSION['user']['id'];
+			$query = "INSERT INTO posts (user_id, title, slug, image, body, published, created_at, updated_at) VALUES('$user_id', '$title', '$post_slug', '$featured_image', '$body', $published, now(), now())";
 			if(mysqli_query($conn, $query)){ // if post created successfully 如果帖子創建成功
 				$inserted_post_id = mysqli_insert_id($conn);
 				// create relationship between post and topic 建立帖子與主題之間的關係
@@ -210,17 +211,19 @@ function createPost($request_values)
 		if (isset($_GET['publish'])) {
 			$message = "Post published successfully";
 			$post_id = $_GET['publish'];
+			$status = '1';
 		} else if (isset($_GET['unpublish'])) {
 			$message = "Post successfully unpublished";
 			$post_id = $_GET['unpublish'];
+			$status = '0';
 		}
-		togglePublishPost($post_id, $message);
+		togglePublishPost($post_id, $message, $status);
 	}
 	// delete blog post 刪除博客文章
-	function togglePublishPost($post_id, $message)
+	function togglePublishPost($post_id, $message,string $status)
 	{
 		global $conn;
-		$sql = "UPDATE posts SET published=!published WHERE id=$post_id";
+		$sql = "UPDATE posts SET published=$status WHERE id=$post_id";
 		
 		if (mysqli_query($conn, $sql)) {
 			$_SESSION['message'] = $message;

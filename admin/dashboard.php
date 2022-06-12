@@ -46,10 +46,12 @@
 	<div class="container dashboard">
 		<h1>Welcome</h1>
 		<div class="stats">
-			<a href="users.php" class="first">
-				<span></span> <br>
-				<span>Newly registered users</span>
-			</a>
+			<?php if ($_SESSION['user']['role'] == "Admin") {
+				echo '<a href="users.php" class="first">';
+				echo '<span></span> <br>';
+				echo '<span>Newly registered users</span>';
+				echo '</a>';
+			} ?>
 			<a href="posts.php">
 				<span></span> <br>
 				<span>Published posts</span>
@@ -61,7 +63,9 @@
 		</div>
 		<br><br><br>
 		<div class="buttons">
-			<a href="users.php">Add Users</a>
+			<?php if ($_SESSION['user']['role'] == "Admin") {
+				echo "<a href=users.php>Add Users</a>";
+			} ?>
 			<a href="posts.php">Add Posts</a>
 		</div>
 	</div>

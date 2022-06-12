@@ -87,7 +87,7 @@
 				if ( in_array($_SESSION['user']['role'], ["Admin", "Author"])) {
 					$_SESSION['message'] = "You are now logged in";
 					// redirect to admin area 重定向到管理區域
-				
+					header('location: admin/dashboard.php');
 				} else {
 					$_SESSION['message'] = "You are now logged in";
 					// redirect to public area 重定向到公共區域
